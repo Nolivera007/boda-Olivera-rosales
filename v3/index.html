@@ -53,7 +53,7 @@
                 radial-gradient(circle at 80% 85%, rgba(74,110,74,.04) 0%, transparent 45%),
                 #faf6ee;
             display: flex; flex-direction: column;
-            align-items: center; justify-content: space-between;
+            align-items: center; justify-content: center;
             padding: 40px 20px;
             transition: opacity .9s ease, visibility .9s ease;
             overflow: hidden;
@@ -72,20 +72,21 @@
             pointer-events: none;
         }
 
-        /* Eucalipto superior */
-        .welcome-eucalipto-top,
-        .welcome-eucalipto-bottom {
-            width: 100%;
-            max-width: 520px;
-            position: relative; z-index: 2;
-            opacity: .85;
+        /* Dibujos decorativos en esquinas (mismos del hero) */
+        .welcome-corner {
+            position: absolute;
+            width: clamp(150px, 40vw, 240px);
+            height: clamp(150px, 40vw, 240px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: .95;
             animation: welcomeFadeIn 1.4s ease both;
         }
-        .welcome-eucalipto-top { height: 110px; }
-        .welcome-eucalipto-bottom { height: 120px; transform: scaleY(-1); }
-
-        .welcome-eucalipto-top svg,
-        .welcome-eucalipto-bottom svg { width: 100%; height: 100%; }
+        .welcome-corner.tr { top: 0; right: 0; }
+        .welcome-corner.bl {
+            bottom: 0; left: 0;
+            transform: scale(-1, -1);
+        }
 
         /* Contenedor central */
         .welcome-content {
@@ -141,17 +142,18 @@
             width: 100%; max-width: 340px;
             aspect-ratio: 3 / 2.1;
             position: relative;
-            margin: 0 auto 30px;
+            margin: 0 auto 22px;
             cursor: pointer;
             transition: transform .4s cubic-bezier(.4, 0, .2, 1);
             filter: drop-shadow(0 10px 30px rgba(45, 74, 45, .18));
         }
 
-        .welcome-envelope:hover {
+        .welcome-envelope:hover,
+        .welcome-envelope:active {
             transform: translateY(-4px);
         }
 
-        /* Brillo sutil bajo el sobre */
+        /* Brillo sutil bajo el sobre (invita al click) */
         .welcome-envelope::before {
             content: '';
             position: absolute;
@@ -186,13 +188,13 @@
             );
         }
 
-        /* Líneas de pliegue en V (desde esquinas superiores al centro) */
+        /* Líneas de pliegue en V */
         .envelope-v {
             position: absolute; inset: 0; z-index: 2;
             pointer-events: none;
         }
 
-        /* Sombras sutiles del pliegue */
+        /* Sombras del pliegue */
         .envelope-bg::after {
             content: '';
             position: absolute; inset: 0;
@@ -213,42 +215,27 @@
         }
 
         .welcome-envelope:hover .welcome-seal {
-            transform: translate(-50%, -50%) scale(1.05);
+            transform: translate(-50%, -50%) scale(1.08);
         }
 
         .welcome-seal svg { width: 100%; height: 100%; }
 
-        /* Destinatario debajo del sobre */
+        /* Destinatario */
         .welcome-recipient {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: clamp(18px, 3.5vw, 22px);
-            color: var(--text);
-            margin-bottom: 24px;
-            font-weight: 400;
+            font-size: clamp(15px, 3vw, 17px);
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 12px;
         }
 
-        /* Botón "Ver Invitación" */
-        .welcome-btn {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: transparent; color: var(--olive-dark);
-            border: 1.3px solid var(--olive-dark);
-            padding: 13px 36px; cursor: pointer;
-            border-radius: 40px;
+        /* Instrucción discreta */
+        .welcome-hint {
             font-family: 'Montserrat', sans-serif;
-            font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase;
-            font-weight: 500;
-            transition: all .35s ease;
+            font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+            color: var(--gold);
+            opacity: .8;
         }
-        .welcome-btn:hover {
-            background: var(--olive-dark); color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(45,74,45,.25);
-        }
-        .welcome-btn svg {
-            width: 14px; height: 14px;
-            transition: transform .35s ease;
-        }
-        .welcome-btn:hover svg { transform: translateX(4px); }
 
         /* ══════════════════════════════════
            ANIMACIONES SCROLL
@@ -263,7 +250,6 @@
             transform: translateY(0);
         }
 
-        /* Items escalonados en timeline se animan desde los lados */
         .tl-item.pre-animate {
             transform: translateY(30px) scale(.96);
         }
@@ -271,80 +257,12 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Respetar preferencia de usuario */
         @media (prefers-reduced-motion: reduce) {
             .pre-animate {
                 opacity: 1 !important;
                 transform: none !important;
                 transition: none !important;
             }
-        }
-
-        /* ══════════════════════════════════
-           COUNTDOWN
-        ══════════════════════════════════ */
-        .countdown-section {
-            text-align: center;
-            padding: 60px 24px;
-            background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
-            border-top: 1px solid rgba(212,204,187,.4);
-            border-bottom: 1px solid rgba(212,204,187,.4);
-        }
-
-        .countdown-eyebrow {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 12px;
-        }
-
-        .countdown-title {
-            font-family: 'Pinyon Script', 'Great Vibes', cursive;
-            font-size: clamp(32px, 6vw, 46px);
-            color: var(--olive-dark);
-            margin-bottom: 36px;
-            line-height: 1.1;
-        }
-
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .cd-box {
-            background: #fff;
-            border: 1px solid rgba(212,204,187,.8);
-            border-radius: 4px;
-            padding: 20px 6px;
-            box-shadow: 0 4px 16px rgba(45,74,45,.08);
-            transition: transform .3s, box-shadow .3s;
-        }
-
-        .cd-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(45,74,45,.14);
-        }
-
-        .cd-num {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(24px, 5vw, 36px);
-            font-weight: 400;
-            color: var(--olive-dark);
-            line-height: 1;
-            display: block;
-        }
-
-        .cd-label {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-light);
-            margin-top: 8px;
-            display: block;
         }
 
         /* ── NAV ── */
@@ -1113,52 +1031,25 @@
      PANTALLA DE INGRESO (ESTILO SOBRE)
 ══════════════════════════════ -->
 <div id="welcome-overlay">
-    <!-- EUCALIPTO SUPERIOR -->
-    <div class="welcome-eucalipto-top">
-        <svg viewBox="0 0 520 110" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="wLeafA" cx="50%" cy="45%"><stop offset="0%" stop-color="#b8c7a8"/><stop offset="100%" stop-color="#6d8f65"/></radialGradient>
-                <radialGradient id="wLeafB" cx="50%" cy="45%"><stop offset="0%" stop-color="#a8b89a"/><stop offset="100%" stop-color="#5a7e5a"/></radialGradient>
-                <radialGradient id="wLeafC" cx="50%" cy="45%"><stop offset="0%" stop-color="#c6d4b8"/><stop offset="100%" stop-color="#8ba880"/></radialGradient>
-            </defs>
-
-            <!-- Rama izquierda -->
-            <g transform="translate(130, 15)">
-                <path d="M 0 50 Q 50 30, 100 50" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="15" cy="40" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 15 40)" opacity=".85"/>
-                <ellipse cx="35" cy="30" rx="18" ry="9" fill="url(#wLeafB)" transform="rotate(-10 35 30)"/>
-                <ellipse cx="55" cy="28" rx="18" ry="9" fill="url(#wLeafC)" transform="rotate(15 55 28)" opacity=".9"/>
-                <ellipse cx="75" cy="35" rx="18" ry="9" fill="url(#wLeafA)" transform="rotate(-5 75 35)"/>
-                <ellipse cx="95" cy="45" rx="16" ry="8" fill="url(#wLeafB)" transform="rotate(20 95 45)" opacity=".85"/>
-                <ellipse cx="45" cy="50" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(-30 45 50)" opacity=".7"/>
-                <ellipse cx="65" cy="52" rx="14" ry="7" fill="url(#wLeafA)" transform="rotate(-20 65 52)" opacity=".7"/>
-            </g>
-
-            <!-- Rama central con cascada -->
-            <g transform="translate(260, 10)">
-                <path d="M 0 0 Q 0 40, 0 80" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="-18" cy="15" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(-30 -18 15)" opacity=".85"/>
-                <ellipse cx="18" cy="15" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(30 18 15)" opacity=".85"/>
-                <ellipse cx="-24" cy="35" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 -24 35)"/>
-                <ellipse cx="24" cy="35" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(25 24 35)"/>
-                <ellipse cx="-28" cy="60" rx="17" ry="9" fill="url(#wLeafB)" transform="rotate(-20 -28 60)"/>
-                <ellipse cx="28" cy="60" rx="17" ry="9" fill="url(#wLeafB)" transform="rotate(20 28 60)"/>
-                <ellipse cx="0" cy="82" rx="14" ry="7" fill="url(#wLeafC)" opacity=".8"/>
-            </g>
-
-            <!-- Rama derecha -->
-            <g transform="translate(290, 15)">
-                <path d="M 0 50 Q 50 30, 100 50" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="15" cy="45" rx="16" ry="8" fill="url(#wLeafB)" transform="rotate(20 15 45)" opacity=".85"/>
-                <ellipse cx="35" cy="35" rx="18" ry="9" fill="url(#wLeafA)" transform="rotate(-5 35 35)"/>
-                <ellipse cx="55" cy="28" rx="18" ry="9" fill="url(#wLeafC)" transform="rotate(15 55 28)" opacity=".9"/>
-                <ellipse cx="75" cy="30" rx="18" ry="9" fill="url(#wLeafB)" transform="rotate(-10 75 30)"/>
-                <ellipse cx="95" cy="40" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 95 40)" opacity=".85"/>
-                <ellipse cx="40" cy="50" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(20 40 50)" opacity=".7"/>
-                <ellipse cx="60" cy="52" rx="14" ry="7" fill="url(#wLeafA)" transform="rotate(30 60 52)" opacity=".7"/>
-            </g>
-        </svg>
-    </div>
+    <!-- DIBUJOS DECORATIVOS (mismos que el hero) -->
+    <svg class="welcome-corner tr" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240,10 C200,50 150,100 100,150 C60,190 20,230 5,255" stroke="#4a6e4a" stroke-width="1.8" fill="none" opacity=".5"/>
+        <path d="M200,18 C220,5 248,12 242,38 C236,62 208,56 200,18Z" fill="rgba(80,130,80,.28)"/>
+        <path d="M175,44 C198,28 225,38 216,64 C207,90 178,80 175,44Z" fill="rgba(80,130,80,.25)"/>
+        <path d="M145,78 C170,60 198,72 187,98 C176,124 148,114 145,78Z" fill="rgba(80,130,80,.24)"/>
+        <path d="M112,115 C138,97 165,112 152,138 C139,163 112,151 112,115Z" fill="rgba(80,130,80,.21)"/>
+        <path d="M225,14 C210,3 200,18 210,28 C220,38 234,26 225,14Z" fill="rgba(80,130,80,.2)"/>
+        <path d="M190,38 C175,26 165,44 178,54 C191,64 204,52 190,38Z" fill="rgba(80,130,80,.18)"/>
+        <path d="M158,72 C142,58 134,78 148,88 C162,98 174,86 158,72Z" fill="rgba(80,130,80,.17)"/>
+    </svg>
+    <svg class="welcome-corner bl" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240,10 C200,50 150,100 100,150 C60,190 20,230 5,255" stroke="#4a6e4a" stroke-width="1.8" fill="none" opacity=".5"/>
+        <path d="M200,18 C220,5 248,12 242,38 C236,62 208,56 200,18Z" fill="rgba(80,130,80,.28)"/>
+        <path d="M175,44 C198,28 225,38 216,64 C207,90 178,80 175,44Z" fill="rgba(80,130,80,.25)"/>
+        <path d="M145,78 C170,60 198,72 187,98 C176,124 148,114 145,78Z" fill="rgba(80,130,80,.24)"/>
+        <path d="M225,14 C210,3 200,18 210,28 C220,38 234,26 225,14Z" fill="rgba(80,130,80,.2)"/>
+        <path d="M190,38 C175,26 165,44 178,54 C191,64 204,52 190,38Z" fill="rgba(80,130,80,.18)"/>
+    </svg>
 
     <!-- CONTENIDO CENTRAL -->
     <div class="welcome-content">
@@ -1170,7 +1061,7 @@
 
         <p class="welcome-tagline">Acompáñanos a celebrar este gran día.</p>
 
-        <!-- SOBRE CON SELLO -->
+        <!-- SOBRE CON SELLO (al tocar abre la invitación) -->
         <div class="welcome-envelope" onclick="closeWelcome()">
             <div class="envelope-bg"></div>
 
@@ -1202,49 +1093,7 @@
 
         <p class="welcome-recipient">El Hatillo, Francisco Morazán</p>
 
-        <button class="welcome-btn" onclick="closeWelcome()">
-            Ver Invitación
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-            </svg>
-        </button>
-    </div>
-
-    <!-- EUCALIPTO INFERIOR (espejo) -->
-    <div class="welcome-eucalipto-bottom">
-        <svg viewBox="0 0 520 110" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(130, 15)">
-                <path d="M 0 50 Q 50 30, 100 50" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="15" cy="40" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 15 40)" opacity=".85"/>
-                <ellipse cx="35" cy="30" rx="18" ry="9" fill="url(#wLeafB)" transform="rotate(-10 35 30)"/>
-                <ellipse cx="55" cy="28" rx="18" ry="9" fill="url(#wLeafC)" transform="rotate(15 55 28)" opacity=".9"/>
-                <ellipse cx="75" cy="35" rx="18" ry="9" fill="url(#wLeafA)" transform="rotate(-5 75 35)"/>
-                <ellipse cx="95" cy="45" rx="16" ry="8" fill="url(#wLeafB)" transform="rotate(20 95 45)" opacity=".85"/>
-                <ellipse cx="45" cy="50" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(-30 45 50)" opacity=".7"/>
-                <ellipse cx="65" cy="52" rx="14" ry="7" fill="url(#wLeafA)" transform="rotate(-20 65 52)" opacity=".7"/>
-            </g>
-            <g transform="translate(260, 10)">
-                <path d="M 0 0 Q 0 40, 0 80" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="-18" cy="15" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(-30 -18 15)" opacity=".85"/>
-                <ellipse cx="18" cy="15" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(30 18 15)" opacity=".85"/>
-                <ellipse cx="-24" cy="35" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 -24 35)"/>
-                <ellipse cx="24" cy="35" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(25 24 35)"/>
-                <ellipse cx="-28" cy="60" rx="17" ry="9" fill="url(#wLeafB)" transform="rotate(-20 -28 60)"/>
-                <ellipse cx="28" cy="60" rx="17" ry="9" fill="url(#wLeafB)" transform="rotate(20 28 60)"/>
-                <ellipse cx="0" cy="82" rx="14" ry="7" fill="url(#wLeafC)" opacity=".8"/>
-            </g>
-            <g transform="translate(290, 15)">
-                <path d="M 0 50 Q 50 30, 100 50" fill="none" stroke="#5a7e5a" stroke-width="1" opacity=".5"/>
-                <ellipse cx="15" cy="45" rx="16" ry="8" fill="url(#wLeafB)" transform="rotate(20 15 45)" opacity=".85"/>
-                <ellipse cx="35" cy="35" rx="18" ry="9" fill="url(#wLeafA)" transform="rotate(-5 35 35)"/>
-                <ellipse cx="55" cy="28" rx="18" ry="9" fill="url(#wLeafC)" transform="rotate(15 55 28)" opacity=".9"/>
-                <ellipse cx="75" cy="30" rx="18" ry="9" fill="url(#wLeafB)" transform="rotate(-10 75 30)"/>
-                <ellipse cx="95" cy="40" rx="16" ry="8" fill="url(#wLeafA)" transform="rotate(-25 95 40)" opacity=".85"/>
-                <ellipse cx="40" cy="50" rx="14" ry="7" fill="url(#wLeafC)" transform="rotate(20 40 50)" opacity=".7"/>
-                <ellipse cx="60" cy="52" rx="14" ry="7" fill="url(#wLeafA)" transform="rotate(30 60 52)" opacity=".7"/>
-            </g>
-        </svg>
+        <p class="welcome-hint">Toca el sobre para abrir tu invitación</p>
     </div>
 </div>
 
@@ -1341,33 +1190,6 @@
         <div><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Segundos</div></div>
     </div>
 </div>
-
-<!-- ══════════════════════════════
-     COUNTDOWN
-══════════════════════════════ -->
-<section class="countdown-section">
-    <p class="countdown-eyebrow">Faltan</p>
-    <h2 class="countdown-title">Para nuestro gran día</h2>
-
-    <div class="countdown-grid">
-        <div class="cd-box">
-            <span class="cd-num" id="cd-days">0</span>
-            <span class="cd-label">Días</span>
-        </div>
-        <div class="cd-box">
-            <span class="cd-num" id="cd-hours">0</span>
-            <span class="cd-label">Horas</span>
-        </div>
-        <div class="cd-box">
-            <span class="cd-num" id="cd-minutes">0</span>
-            <span class="cd-label">Minutos</span>
-        </div>
-        <div class="cd-box">
-            <span class="cd-num" id="cd-seconds">0</span>
-            <span class="cd-label">Segundos</span>
-        </div>
-    </div>
-</section>
 
 <!-- ══════════════════════════════
      DETALLES
@@ -1923,48 +1745,8 @@ function closeWelcome(){
     document.body.classList.remove('welcome-open');
     setTimeout(()=>{ ov.style.display = 'none'; }, 900);
 
-    // Iniciar countdown cuando se cierre el overlay
-    startCountdown();
-
-    // Activar animaciones scroll
+    // Activar animaciones scroll (countdown original tick() ya corre solo)
     setupScrollAnimations();
-}
-
-// ═══════════════════════════════
-//   COUNTDOWN A LA BODA
-// ═══════════════════════════════
-const WEDDING_DATE = new Date('2026-06-20T17:00:00-06:00');
-
-function updateCountdown(){
-    const now = new Date();
-    const diff = WEDDING_DATE - now;
-
-    if(diff <= 0){
-        document.querySelectorAll('.cd-num').forEach(el => el.textContent = '0');
-        return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    const d = document.getElementById('cd-days');
-    const h = document.getElementById('cd-hours');
-    const m = document.getElementById('cd-minutes');
-    const s = document.getElementById('cd-seconds');
-
-    if(d) d.textContent = days;
-    if(h) h.textContent = hours;
-    if(m) m.textContent = minutes;
-    if(s) s.textContent = seconds;
-}
-
-function startCountdown(){
-    updateCountdown();
-    if(!window._countdownInterval){
-        window._countdownInterval = setInterval(updateCountdown, 1000);
-    }
 }
 
 // ═══════════════════════════════
@@ -1987,7 +1769,6 @@ function setupScrollAnimations(){
 
     targets.forEach((el, i) => {
         el.classList.add('pre-animate');
-        // Delay escalonado para items en listas
         if(el.classList.contains('tl-item') || el.classList.contains('detail-card')){
             el.style.transitionDelay = (i * 0.08) + 's';
         }
@@ -1995,16 +1776,9 @@ function setupScrollAnimations(){
     });
 }
 
-// Si al cargar no hay overlay (cerrado previamente), iniciar inmediatamente
+// Activar animaciones al cargar
 document.addEventListener('DOMContentLoaded', () => {
-    const ov = document.getElementById('welcome-overlay');
-    if(!ov || getComputedStyle(ov).display === 'none' || ov.classList.contains('hide')){
-        startCountdown();
-        setupScrollAnimations();
-    } else {
-        // Aun con overlay, iniciar countdown (corre en background)
-        startCountdown();
-    }
+    setupScrollAnimations();
 });
 
 // ── GUESTS ──
@@ -2208,19 +1982,63 @@ function setAttending(val){
 document.getElementById('opt-yes').addEventListener('click', ()=>setAttending('si'));
 document.getElementById('opt-no').addEventListener('click',  ()=>setAttending('no'));
 
+// Validación en vivo del número de personas
+document.getElementById('rsvp-count').addEventListener('input', function(){
+    const max = parseInt(document.getElementById('rsvp-max').value, 10) || 1;
+    const val = parseInt(this.value, 10);
+    if (val > max) {
+        this.style.borderColor = '#c94444';
+        this.setCustomValidity(`Tu invitación es para ${max} ${max === 1 ? 'persona' : 'personas'}`);
+    } else {
+        this.style.borderColor = '';
+        this.setCustomValidity('');
+    }
+});
+
+// Al perder el foco, si el valor es mayor al máximo, alertar y corregir
+document.getElementById('rsvp-count').addEventListener('blur', function(){
+    const max = parseInt(document.getElementById('rsvp-max').value, 10) || 1;
+    const val = parseInt(this.value, 10);
+    if (val > max) {
+        alert(`⚠️ Tu invitación es para ${max} ${max === 1 ? 'persona' : 'personas'}.\n\nNo puedes confirmar más invitados de los asignados. Ajustaremos el número automáticamente.`);
+        this.value = max;
+        this.style.borderColor = '';
+        this.setCustomValidity('');
+    } else if (val < 1 || isNaN(val)) {
+        this.value = 1;
+    }
+});
+
 function submitRsvp(ev){
     ev.preventDefault();
     const btn = document.getElementById('rsvp-submit-btn');
-    btn.disabled = true; btn.textContent = 'Enviando…';
 
     const attending = document.querySelector('input[name="attending"]:checked').value;
+    const maxInvited = parseInt(document.getElementById('rsvp-max').value, 10) || 1;
+    const count = attending === 'si' ? parseInt(document.getElementById('rsvp-count').value, 10) || 1 : 0;
+
+    // Validación: no permitir confirmar más personas que las invitadas
+    if (attending === 'si' && count > maxInvited) {
+        alert(`⚠️ No puedes confirmar más de ${maxInvited} ${maxInvited === 1 ? 'persona' : 'personas'}.\n\nTu invitación es para ${maxInvited} ${maxInvited === 1 ? 'persona' : 'personas'}. Si necesitas más, por favor contáctanos directamente.`);
+        document.getElementById('rsvp-count').focus();
+        return;
+    }
+
+    if (attending === 'si' && count < 1) {
+        alert('Por favor ingresa al menos 1 persona.');
+        document.getElementById('rsvp-count').focus();
+        return;
+    }
+
+    btn.disabled = true; btn.textContent = 'Enviando…';
+
     const record = {
         ts: new Date().toISOString(),
         principal: document.getElementById('rsvp-principal').value,
         confirmedBy: document.getElementById('rsvp-who').value.trim(),
         attending,
-        count: attending==='si' ? parseInt(document.getElementById('rsvp-count').value,10) || 1 : 0,
-        maxInvited: parseInt(document.getElementById('rsvp-max').value,10) || 1
+        count,
+        maxInvited
     };
 
     saveRsvp(record);
