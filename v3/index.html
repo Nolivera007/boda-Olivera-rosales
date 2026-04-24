@@ -137,7 +137,7 @@
             margin-bottom: 30px;
         }
 
-        /* SOBRE con sello */
+        /* SOBRE con sello - ABRIBLE */
         .welcome-envelope {
             width: 100%; max-width: 340px;
             aspect-ratio: 3 / 2.1;
@@ -146,6 +146,7 @@
             cursor: pointer;
             transition: transform .4s cubic-bezier(.4, 0, .2, 1);
             filter: drop-shadow(0 10px 30px rgba(45, 74, 45, .18));
+            perspective: 1200px;
         }
 
         .welcome-envelope:hover,
@@ -169,15 +170,16 @@
             50% { opacity: .9; transform: scale(1.05); }
         }
 
-        /* Cuerpo del sobre */
+        /* Cuerpo del sobre (parte de atrás) */
         .envelope-bg {
             position: absolute; inset: 0;
             background: linear-gradient(180deg, #f0eadb 0%, #e8dfc9 100%);
             border-radius: 4px;
             overflow: hidden;
+            z-index: 1;
         }
 
-        /* Textura diagonal del sobre */
+        /* Textura diagonal */
         .envelope-bg::before {
             content: '';
             position: absolute; inset: 0;
@@ -186,12 +188,6 @@
                 transparent 0 3px,
                 rgba(45,74,45,.05) 3px 4px
             );
-        }
-
-        /* Líneas de pliegue en V */
-        .envelope-v {
-            position: absolute; inset: 0; z-index: 2;
-            pointer-events: none;
         }
 
         /* Sombras del pliegue */
@@ -203,6 +199,88 @@
                 linear-gradient(-135deg, rgba(0,0,0,.04) 0%, transparent 45%);
         }
 
+        /* Solapa superior (triangular) - la que se abre */
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 55%;
+            background: linear-gradient(180deg, #ede6d0 0%, #e0d6bc 100%);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top center;
+            transform: rotateX(0deg);
+            transition: transform 1s cubic-bezier(.7, 0, .3, 1);
+            z-index: 4;
+            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+        }
+        .envelope-flap::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent 0 3px,
+                rgba(45,74,45,.05) 3px 4px
+            );
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+        }
+
+        /* Parte delantera del sobre (oculta la carta) */
+        .envelope-front {
+            position: absolute;
+            top: 45%; left: 0;
+            width: 100%; height: 55%;
+            background: linear-gradient(180deg, #f0eadb 0%, #e8dfc9 100%);
+            z-index: 3;
+            border-radius: 0 0 4px 4px;
+        }
+        .envelope-front::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent 0 3px,
+                rgba(45,74,45,.05) 3px 4px
+            );
+            border-radius: 0 0 4px 4px;
+        }
+        /* Líneas V del pliegue inferior */
+        .envelope-front::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                linear-gradient(to top right, transparent 49.5%, rgba(45,74,45,.12) 49.5%, rgba(45,74,45,.12) 50.5%, transparent 50.5%),
+                linear-gradient(to top left, transparent 49.5%, rgba(45,74,45,.12) 49.5%, rgba(45,74,45,.12) 50.5%, transparent 50.5%);
+        }
+
+        /* Carta dentro del sobre (oculta al inicio, aparece al abrir) */
+        .envelope-letter {
+            position: absolute;
+            inset: 10% 8% 8%;
+            background: linear-gradient(180deg, #fff 0%, #faf6ee 100%);
+            border-radius: 2px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.1);
+            z-index: 2;
+            transform: translateY(15%) scale(.92);
+            opacity: .4;
+            transition: transform 1s cubic-bezier(.3, 0, .2, 1) .4s, opacity .8s ease .4s;
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px;
+        }
+        .envelope-letter-content {
+            text-align: center;
+            font-family: 'Pinyon Script', 'Great Vibes', cursive;
+            font-size: 22px;
+            color: var(--olive-dark);
+            line-height: 1;
+        }
+        .envelope-letter-content .heart {
+            display: block;
+            margin-top: 4px;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
         /* Sello de cera dorado */
         .welcome-seal {
             position: absolute;
@@ -211,7 +289,8 @@
             width: 90px; height: 90px;
             z-index: 5;
             filter: drop-shadow(0 3px 8px rgba(0,0,0,.3));
-            transition: transform .4s;
+            transition: transform .6s cubic-bezier(.7, 0, .3, 1), opacity .6s ease;
+            cursor: pointer;
         }
 
         .welcome-envelope:hover .welcome-seal {
@@ -219,6 +298,20 @@
         }
 
         .welcome-seal svg { width: 100%; height: 100%; }
+
+        /* ESTADO: SOBRE ABIERTO */
+        .welcome-envelope.opening .welcome-seal {
+            transform: translate(-50%, -200%) scale(.5) rotate(-25deg);
+            opacity: 0;
+        }
+        .welcome-envelope.opening .envelope-flap {
+            transform: rotateX(-180deg);
+            box-shadow: 0 -4px 10px rgba(0,0,0,.1);
+        }
+        .welcome-envelope.opening .envelope-letter {
+            transform: translateY(-25%) scale(1);
+            opacity: 1;
+        }
 
         /* Destinatario */
         .welcome-recipient {
@@ -361,12 +454,58 @@
         .name-script.and  { font-family: 'Great Vibes', cursive; font-size: clamp(42px,9vw,72px); font-style: italic; padding: 0 8px; color: var(--gold); }
         .name-script.abi  { font-size: clamp(72px,15vw,120px); padding: 0 12px; }
 
+        /* ══ ANIMACIÓN ESCRITURA DE NOMBRES ══ */
+        body.hero-animating .name-script {
+            opacity: 0;
+            transform: translateY(12px);
+            filter: blur(4px);
+        }
+        body.hero-animated .name-script.noe {
+            animation: writeName 1.3s cubic-bezier(.4,0,.2,1) .2s both;
+        }
+        body.hero-animated .name-script.and {
+            animation: writeName 1s cubic-bezier(.4,0,.2,1) 1.4s both;
+        }
+        body.hero-animated .name-script.abi {
+            animation: writeName 1.5s cubic-bezier(.4,0,.2,1) 1.9s both;
+        }
+
+        @keyframes writeName {
+            0%   { opacity: 0; transform: translateY(12px); filter: blur(4px); letter-spacing: 8px; }
+            60%  { opacity: .7; filter: blur(1px); letter-spacing: 2px; }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); letter-spacing: 0; }
+        }
+
         .hero-line {
             display: flex; align-items: center; justify-content: center; gap: 14px;
             margin: 18px 0;
         }
         .hero-line::before,.hero-line::after {
             content:''; flex:1; max-width:80px; height:1px; background:var(--olive-light);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 1s cubic-bezier(.6, 0, .3, 1);
+        }
+        .hero-line::after { transform-origin: right center; }
+
+        .hero-line svg {
+            transform: scale(0);
+            opacity: 0;
+            transition: transform .5s cubic-bezier(.34, 1.56, .64, 1) 1.4s, opacity .4s ease 1.4s;
+        }
+
+        body.hero-animated .hero-line::before {
+            transform: scaleX(1);
+            transition-delay: 3.6s;
+        }
+        body.hero-animated .hero-line::after {
+            transform: scaleX(1);
+            transition-delay: 3.6s;
+        }
+        body.hero-animated .hero-line svg {
+            transform: scale(1) rotate(0);
+            opacity: 1;
+            transition: transform .6s cubic-bezier(.34, 1.56, .64, 1) 4.3s, opacity .4s ease 4.3s;
         }
         .hero-verse {
             font-style: italic; font-size: 15px; color: var(--text-light);
@@ -907,51 +1046,73 @@
         #regalos { background: var(--cream); }
         .regalo-intro {
             text-align:center; max-width:440px; margin:0 auto 36px;
+            font-family: 'Cormorant Garamond', Georgia, serif;
             font-style:italic; font-size:16px; color:var(--text-light);
+            line-height: 1.7;
         }
-        .bank-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-            gap: 20px; max-width: 620px; margin: 0 auto;
+        .bank-list {
+            display: flex; flex-direction: column; gap: 32px;
+            max-width: 420px; margin: 0 auto;
         }
-        .bank-card {
-            border: 1px solid var(--cream-border);
-            background: #fff; padding: 28px 24px; text-align: center;
+        .bank-entry {
+            text-align: center;
             position: relative;
         }
-        /* bank-logo text badges removed — using img logos */
-        .bank-holder {
-            font-size: 19px; color: var(--olive-dark); margin-bottom: 4px;
-        }
-        .bank-type {
+        .bank-entry-bank {
             font-family: 'Montserrat', sans-serif;
-            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+            font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--gold); font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .bank-entry-holder {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px; color: var(--olive-dark);
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .bank-entry-type {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 13px; font-style: italic;
             color: var(--text-light); margin-bottom: 14px;
         }
-        .bank-number {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 17px; font-weight: 400; letter-spacing: 2px;
-            color: var(--text); background: var(--cream-dark);
-            padding: 10px 18px; display: inline-block;
-            border: 1px solid var(--cream-border); margin-bottom: 12px;
-            cursor: pointer; transition: background .2s;
+        .bank-entry-number {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 20px; font-weight: 500; letter-spacing: 2px;
+            color: var(--olive-dark);
+            cursor: pointer;
+            display: inline-block;
+            padding: 4px 2px;
+            border-bottom: 1px dashed var(--olive-light);
+            transition: color .2s, border-color .2s;
             user-select: all;
         }
-        .bank-number:hover { background: #e8e0d0; }
-        .copy-hint {
+        .bank-entry-number:hover {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+        .bank-entry-hint {
+            display: block;
             font-family: 'Montserrat', sans-serif;
-            font-size: 9.5px; letter-spacing: 1px;
-            color: var(--olive-light); margin-top: 0;
+            font-size: 9.5px; letter-spacing: 1.5px;
+            color: var(--olive-light);
+            margin-top: 10px;
+        }
+        .bank-entry-separator {
+            width: 40px; height: 1px;
+            background: var(--cream-border);
+            margin: 0 auto;
         }
         .copy-toast {
-            position: absolute; top: 12px; right: 12px;
+            position: absolute; top: -6px; left: 50%;
+            transform: translateX(-50%);
             background: var(--olive-dark); color: var(--cream);
             font-family: 'Montserrat', sans-serif;
             font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase;
-            padding: 4px 10px; opacity: 0;
-            transition: opacity .3s; pointer-events: none;
+            padding: 4px 12px; opacity: 0;
+            transition: opacity .3s, transform .3s; pointer-events: none;
+            border-radius: 2px;
         }
-        .copy-toast.show { opacity: 1; }
+        .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 
         /* ── RSVP ── */
         #confirmar { background: var(--cream-dark); text-align: center; }
@@ -1061,17 +1222,26 @@
 
         <p class="welcome-tagline">Acompáñanos a celebrar este gran día.</p>
 
-        <!-- SOBRE CON SELLO (al tocar abre la invitación) -->
-        <div class="welcome-envelope" onclick="closeWelcome()">
+        <!-- SOBRE CON SELLO (se abre al tocarlo) -->
+        <div class="welcome-envelope" id="welcomeEnvelope" onclick="openEnvelope()">
+            <!-- Cuerpo del sobre (atrás) -->
             <div class="envelope-bg"></div>
 
-            <!-- Líneas en V -->
-            <svg class="envelope-v" viewBox="0 0 300 210" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="0" y1="0" x2="150" y2="105" stroke="rgba(45,74,45,.12)" stroke-width="1.2"/>
-                <line x1="300" y1="0" x2="150" y2="105" stroke="rgba(45,74,45,.12)" stroke-width="1.2"/>
-            </svg>
+            <!-- Carta dentro del sobre -->
+            <div class="envelope-letter">
+                <div class="envelope-letter-content">
+                    Noé <span style="color: var(--gold); font-family: 'Great Vibes', cursive; font-style: italic; font-size: 16px;">y</span> Abigail
+                    <span class="heart">♥</span>
+                </div>
+            </div>
 
-            <!-- SELLO DE CERA DORADO -->
+            <!-- Parte delantera del sobre (oculta carta, se queda fija) -->
+            <div class="envelope-front"></div>
+
+            <!-- Solapa superior (la que se abre) -->
+            <div class="envelope-flap"></div>
+
+            <!-- SELLO DE CERA DORADO (encima de la solapa) -->
             <div class="welcome-seal">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -1090,8 +1260,6 @@
                 </svg>
             </div>
         </div>
-
-        <p class="welcome-recipient">El Hatillo, Francisco Morazán</p>
 
         <p class="welcome-hint">Toca el sobre para abrir tu invitación</p>
     </div>
@@ -1500,36 +1668,32 @@
         agradecemos hacerlo en efectivo a través de nuestras cuentas:
     </p>
 
-    <div class="bank-cards">
+    <div class="bank-list">
 
         <!-- Abigail — BAC -->
-        <div class="bank-card" id="card-abi">
+        <div class="bank-entry">
             <div class="copy-toast" id="toast-abi">¡Copiado!</div>
-            <span class="bank-logo-text bac" aria-label="BAC Credomatic">
-                <span class="bl-main">BAC</span>
-                <span class="bl-sub">CREDOMATIC</span>
-            </span>
-            <div class="bank-holder">Abigail</div>
-            <div class="bank-type">Cuenta de Ahorros</div>
-            <div class="bank-number" onclick="copyNum('743988041','toast-abi')" title="Clic para copiar">
+            <div class="bank-entry-bank">BAC Credomatic</div>
+            <div class="bank-entry-holder">Abigail</div>
+            <div class="bank-entry-type">Cuenta de Ahorros</div>
+            <div class="bank-entry-number" onclick="copyNum('743988041','toast-abi')" title="Clic para copiar">
                 743988041
             </div>
-            <p class="copy-hint">Clic en el número para copiar</p>
+            <span class="bank-entry-hint">Clic para copiar</span>
         </div>
 
+        <div class="bank-entry-separator"></div>
+
         <!-- Noé — Atlántida -->
-        <div class="bank-card" id="card-noe">
+        <div class="bank-entry">
             <div class="copy-toast" id="toast-noe">¡Copiado!</div>
-            <span class="bank-logo-text atl" aria-label="Banco Atlántida">
-                <span class="bl-main">ATLÁNTIDA</span>
-                <span class="bl-sub">BANCO</span>
-            </span>
-            <div class="bank-holder">Noé</div>
-            <div class="bank-type">Cuenta de Ahorros</div>
-            <div class="bank-number" onclick="copyNum('12020114232','toast-noe')" title="Clic para copiar">
+            <div class="bank-entry-bank">Banco Atlántida</div>
+            <div class="bank-entry-holder">Noé</div>
+            <div class="bank-entry-type">Cuenta de Ahorros</div>
+            <div class="bank-entry-number" onclick="copyNum('12020114232','toast-noe')" title="Clic para copiar">
                 12020114232
             </div>
-            <p class="copy-hint">Clic en el número para copiar</p>
+            <span class="bank-entry-hint">Clic para copiar</span>
         </div>
 
     </div>
@@ -1558,7 +1722,6 @@
                 </svg>
                 Confirmar con Noé
             </a>
-            <span class="rsvp-who">+504 8847-2150</span>
         </div>
 
         <div style="text-align:center;">
@@ -1570,7 +1733,6 @@
                 </svg>
                 Confirmar con Abigail
             </a>
-            <span class="rsvp-who">+504 9522-1083</span>
         </div>
     </div>
 
@@ -1738,6 +1900,18 @@
 
 <script>
 // ── WELCOME OVERLAY ──
+function openEnvelope(){
+    const env = document.getElementById('welcomeEnvelope');
+    if(!env || env.classList.contains('opening')) return;
+
+    env.classList.add('opening');
+
+    // Después de la animación de apertura, cerrar el overlay
+    setTimeout(() => {
+        closeWelcome();
+    }, 1400);
+}
+
 function closeWelcome(){
     const ov = document.getElementById('welcome-overlay');
     if(!ov) return;
@@ -1745,8 +1919,20 @@ function closeWelcome(){
     document.body.classList.remove('welcome-open');
     setTimeout(()=>{ ov.style.display = 'none'; }, 900);
 
-    // Activar animaciones scroll (countdown original tick() ya corre solo)
+    // Activar animaciones scroll y hero-writing
     setupScrollAnimations();
+    animateHeroOnOpen();
+}
+
+// ═══════════════════════════════
+//   ANIMACIÓN DEL HERO AL ENTRAR
+// ═══════════════════════════════
+function animateHeroOnOpen(){
+    document.body.classList.add('hero-animating');
+    // Disparar animación después de que se oculte el overlay
+    setTimeout(() => {
+        document.body.classList.add('hero-animated');
+    }, 200);
 }
 
 // ═══════════════════════════════
@@ -1778,6 +1964,8 @@ function setupScrollAnimations(){
 
 // Activar animaciones al cargar
 document.addEventListener('DOMContentLoaded', () => {
+    // Marcar hero como "pre-animación" (nombres ocultos hasta abrir sobre)
+    document.body.classList.add('hero-animating');
     setupScrollAnimations();
 });
 
