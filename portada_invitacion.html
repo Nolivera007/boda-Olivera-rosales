@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1">
 <title>Invitación Noé y Abigail</title>
 <style>
 
@@ -1205,37 +1206,36 @@
         }
     
 
-/* ═══════════════ FORMATO CUSTOM COMPACTO ═══════════════ */
-/* Página más corta: 148mm × 190mm (proporción tipo tarjeta de invitación) */
+/* Tamaño exacto de vista móvil iPhone */
 @page {
-    size: 148mm 200mm;
+    size: 103mm 185mm;
     margin: 0;
 }
 
 html, body {
-    width: 148mm;
-    height: 200mm;
+    width: 390px;
+    height: 700px;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-/* Overlay compacto */
+/* Convertir overlay fijo en contenido estático del tamaño de móvil */
 #welcome-overlay {
     position: relative !important;
-    width: 148mm;
-    height: 200mm;
-    padding: 0 !important;
+    width: 390px !important;
+    height: 700px !important;
+    min-height: 700px !important;
+    padding: 30px 20px !important;
     transition: none !important;
     animation: none !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    overflow: hidden;
 }
 
-/* Link invisible que cubre todo */
+/* Link invisible sobre todo el PDF */
 .pdf-overlay-link {
     position: absolute;
     inset: 0;
@@ -1252,29 +1252,12 @@ html, body {
     transform: none !important;
     position: relative;
     z-index: 1;
-    margin: 0 !important;
-    gap: 0 !important;
 }
 
-/* ═══════════════ EUCALIPTO ACERCADO Y MÁS PEQUEÑO ═══════════════ */
 .welcome-corner {
     animation: none !important;
-    width: 90px !important;
-    height: 90px !important;
-    opacity: .8 !important;
 }
 
-/* Acercar eucalipto al centro */
-.welcome-corner.tr {
-    top: -15px !important;
-    right: -15px !important;
-}
-.welcome-corner.bl {
-    bottom: -15px !important;
-    left: -15px !important;
-}
-
-/* Sin efectos hover ni animaciones */
 .welcome-envelope::before {
     animation: none !important;
     opacity: .5 !important;
@@ -1286,41 +1269,6 @@ html, body {
 }
 .welcome-envelope:hover .welcome-seal {
     transform: translate(-50%, -50%) !important;
-}
-
-/* ═══════════════ TAMAÑOS COMPACTOS ═══════════════ */
-.welcome-names-wrap {
-    margin-bottom: 3mm !important;
-}
-
-.welcome-names-wrap .name {
-    font-size: 44px !important;
-}
-
-.welcome-names-wrap .y {
-    font-size: 28px !important;
-    padding: 0 3px !important;
-}
-
-.welcome-tagline {
-    font-size: 12px !important;
-    margin-bottom: 5mm !important;
-}
-
-.welcome-envelope {
-    max-width: 180px !important;
-    margin: 0 auto 5mm !important;
-}
-
-.welcome-seal {
-    width: 55px !important;
-    height: 55px !important;
-}
-
-.welcome-hint {
-    font-size: 8px !important;
-    letter-spacing: 2px !important;
-    margin-top: 0 !important;
 }
 </style>
 </head>
