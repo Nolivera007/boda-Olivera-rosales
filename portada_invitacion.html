@@ -1205,7 +1205,7 @@
         }
     
 
-/* Ajustes específicos para PDF (estático, tamaño A4) */
+/* ═══════════════ AJUSTES PARA PDF ═══════════════ */
 @page { size: A4; margin: 0; }
 
 html, body {
@@ -1215,83 +1215,96 @@ html, body {
     padding: 0;
 }
 
-/* Convertir el overlay en contenido estático del PDF */
+/* Overlay convertido en página estática y COMPACTA */
 #welcome-overlay {
     position: relative !important;
     width: 210mm;
-    min-height: 297mm;
-    padding: 30px 20px;
+    height: 297mm;
+    padding: 15mm 15mm !important;
     transition: none !important;
     animation: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-/* Desactivar animaciones en PDF */
+/* Link invisible que cubre todo el PDF */
+.pdf-overlay-link {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: block;
+    text-decoration: none;
+    color: transparent;
+    /* Invisible pero clickeable en todo el PDF */
+    background: transparent;
+}
+
+/* Contenido debajo del link, pero como el link cubre todo, el click siempre llega */
 .welcome-content {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    position: relative;
+    z-index: 1;
+    margin: 0 !important;
+    gap: 0 !important;
 }
 
 .welcome-corner {
     animation: none !important;
+    width: 150px !important;
+    height: 150px !important;
+    opacity: .85 !important;
 }
 
+/* Desactivar todas las animaciones del sobre */
 .welcome-envelope::before {
     animation: none !important;
-    opacity: .6 !important;
+    opacity: .5 !important;
     transform: scale(1) !important;
 }
-
-/* Hacer el sobre y el link clickeable en el PDF */
-.welcome-envelope-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-
-/* En PDF no queremos efectos hover */
-.welcome-envelope-link:hover .welcome-envelope {
-    transform: none;
-}
-
 .welcome-envelope:hover,
 .welcome-envelope:active {
     transform: none !important;
 }
-
 .welcome-envelope:hover .welcome-seal {
     transform: translate(-50%, -50%) !important;
 }
 
-/* Forzar tamaños cómodos para A4 */
+/* ═══════════════ TAMAÑOS COMPACTOS ═══════════════ */
+.welcome-names-wrap {
+    margin-bottom: 8mm !important;
+}
+
 .welcome-names-wrap .name {
-    font-size: 76px !important;
+    font-size: 62px !important;
 }
 
 .welcome-names-wrap .y {
-    font-size: 46px !important;
+    font-size: 38px !important;
+    padding: 0 4px !important;
 }
 
 .welcome-tagline {
-    font-size: 18px !important;
+    font-size: 15px !important;
+    margin-bottom: 10mm !important;
 }
 
 .welcome-envelope {
-    max-width: 350px !important;
+    max-width: 260px !important;
+    margin: 0 auto 8mm !important;
 }
 
 .welcome-seal {
-    width: 100px !important;
-    height: 100px !important;
+    width: 80px !important;
+    height: 80px !important;
 }
 
 .welcome-hint {
-    font-size: 11px !important;
-}
-
-.welcome-corner {
-    width: 200px !important;
-    height: 200px !important;
+    font-size: 10px !important;
+    margin-top: 0 !important;
 }
 </style>
 </head>
@@ -1299,7 +1312,7 @@ html, body {
 <!-- ══════════════════════════════
      PANTALLA DE INGRESO (ESTILO SOBRE)
 ══════════════════════════════ -->
-<div id="welcome-overlay">
+<div id="welcome-overlay"><a class="pdf-overlay-link" href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/Nolivera007/boda-Olivera-rosales/main/v3/index.html" target="_blank" rel="noopener"></a>
     <!-- DIBUJOS DECORATIVOS (mismos que el hero) -->
     <svg class="welcome-corner tr" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M240,10 C200,50 150,100 100,150 C60,190 20,230 5,255" stroke="#4a6e4a" stroke-width="1.8" fill="none" opacity=".5"/>
@@ -1362,7 +1375,7 @@ html, body {
                     <text x="50" y="58" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="22" font-weight="500" fill="rgba(40,28,8,.6)" letter-spacing="-1">N&amp;A</text>
                 </svg>
             </div>
-        </div></a>
+        </div>
 
         <p class="welcome-hint">Toca el sobre para abrir tu invitación</p>
     </div>
