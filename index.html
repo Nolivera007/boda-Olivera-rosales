@@ -850,7 +850,11 @@
             color:var(--olive-light); margin-top:5px; display:block;
             text-align:center;
         }
-        .rsvp-note { margin-top:28px; font-style:italic; font-size:13px; color:var(--text-light); }
+        .rsvp-note { margin-top:18px; font-style:italic; font-size:14px; color:var(--text-light); line-height:1.6; }
+        .rsvp-note:first-of-type { margin-top:28px; }
+        .rsvp-notes-wrap { margin-top:28px; padding:24px 20px; background:rgba(255,255,255,.5); border-left:3px solid var(--gold); border-radius:4px; }
+        .rsvp-notes-wrap .rsvp-note { margin-top:0; margin-bottom:12px; }
+        .rsvp-notes-wrap .rsvp-note:last-child { margin-bottom:0; }
 
         /* ── FOOTER ── */
         footer {
@@ -1402,8 +1406,10 @@
         </div>
     </div>
 
-    <p class="rsvp-note">Nota: La vestimenta es formal 🤵👗</p>
-    <p class="rsvp-note">Nota: Nos reservamos el color blanco para la novia 🤍</p>
+    <div class="rsvp-notes-wrap">
+        <p class="rsvp-note">🤵👗 La vestimenta es formal</p>
+        <p class="rsvp-note">🤍 Nos reservamos el color blanco para la novia</p>
+    </div>
 
     <p style="margin-top:26px;font-size:13px;color:var(--text-light);">
         💡 También puedes confirmar desde la sección <a href="#tu-invitacion" style="color:var(--olive-dark);">Mi Invitación</a> buscando tu nombre.
