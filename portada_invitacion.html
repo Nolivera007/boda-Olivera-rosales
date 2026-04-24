@@ -1205,31 +1205,37 @@
         }
     
 
-/* ═══════════════ AJUSTES PARA PDF ═══════════════ */
-@page { size: A4; margin: 0; }
-
-html, body {
-    width: 210mm;
-    min-height: 297mm;
+/* ═══════════════ FORMATO CUSTOM COMPACTO ═══════════════ */
+/* Página más corta: 148mm × 190mm (proporción tipo tarjeta de invitación) */
+@page {
+    size: 148mm 200mm;
     margin: 0;
-    padding: 0;
 }
 
-/* Overlay convertido en página estática y COMPACTA */
+html, body {
+    width: 148mm;
+    height: 200mm;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Overlay compacto */
 #welcome-overlay {
     position: relative !important;
-    width: 210mm;
-    height: 297mm;
-    padding: 15mm 15mm !important;
+    width: 148mm;
+    height: 200mm;
+    padding: 0 !important;
     transition: none !important;
     animation: none !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
+    overflow: hidden;
 }
 
-/* Link invisible que cubre todo el PDF */
+/* Link invisible que cubre todo */
 .pdf-overlay-link {
     position: absolute;
     inset: 0;
@@ -1237,11 +1243,9 @@ html, body {
     display: block;
     text-decoration: none;
     color: transparent;
-    /* Invisible pero clickeable en todo el PDF */
     background: transparent;
 }
 
-/* Contenido debajo del link, pero como el link cubre todo, el click siempre llega */
 .welcome-content {
     animation: none !important;
     opacity: 1 !important;
@@ -1252,14 +1256,25 @@ html, body {
     gap: 0 !important;
 }
 
+/* ═══════════════ EUCALIPTO ACERCADO Y MÁS PEQUEÑO ═══════════════ */
 .welcome-corner {
     animation: none !important;
-    width: 150px !important;
-    height: 150px !important;
-    opacity: .85 !important;
+    width: 90px !important;
+    height: 90px !important;
+    opacity: .8 !important;
 }
 
-/* Desactivar todas las animaciones del sobre */
+/* Acercar eucalipto al centro */
+.welcome-corner.tr {
+    top: -15px !important;
+    right: -15px !important;
+}
+.welcome-corner.bl {
+    bottom: -15px !important;
+    left: -15px !important;
+}
+
+/* Sin efectos hover ni animaciones */
 .welcome-envelope::before {
     animation: none !important;
     opacity: .5 !important;
@@ -1275,35 +1290,36 @@ html, body {
 
 /* ═══════════════ TAMAÑOS COMPACTOS ═══════════════ */
 .welcome-names-wrap {
-    margin-bottom: 8mm !important;
+    margin-bottom: 3mm !important;
 }
 
 .welcome-names-wrap .name {
-    font-size: 62px !important;
+    font-size: 44px !important;
 }
 
 .welcome-names-wrap .y {
-    font-size: 38px !important;
-    padding: 0 4px !important;
+    font-size: 28px !important;
+    padding: 0 3px !important;
 }
 
 .welcome-tagline {
-    font-size: 15px !important;
-    margin-bottom: 10mm !important;
+    font-size: 12px !important;
+    margin-bottom: 5mm !important;
 }
 
 .welcome-envelope {
-    max-width: 260px !important;
-    margin: 0 auto 8mm !important;
+    max-width: 180px !important;
+    margin: 0 auto 5mm !important;
 }
 
 .welcome-seal {
-    width: 80px !important;
-    height: 80px !important;
+    width: 55px !important;
+    height: 55px !important;
 }
 
 .welcome-hint {
-    font-size: 10px !important;
+    font-size: 8px !important;
+    letter-spacing: 2px !important;
     margin-top: 0 !important;
 }
 </style>
