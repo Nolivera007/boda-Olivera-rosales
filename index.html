@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boda Noé ∞ Abigail — 20 Junio 2026</title>
+    <title>Boda Noé y Abigail — 20 Junio 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -228,7 +228,7 @@
             color: var(--olive-dark); display: block; line-height: 1.05;
         }
         .name-script.noe  { font-size: clamp(72px,15vw,120px); padding: 0 12px; }
-        .name-script.and  { font-size: clamp(48px,10vw,82px); font-style: normal; padding: 0 8px; color: var(--gold); }
+        .name-script.and  { font-family: 'Great Vibes', cursive; font-size: clamp(42px,9vw,72px); font-style: italic; padding: 0 8px; color: var(--gold); }
         .name-script.abi  { font-size: clamp(72px,15vw,120px); padding: 0 12px; }
 
         .hero-line {
@@ -907,7 +907,7 @@
         <p class="welcome-eyebrow">Tenemos el honor de</p>
         <p class="welcome-eyebrow" style="margin-bottom:20px;">invitarte a nuestra boda</p>
         <h1 class="welcome-names">Noé</h1>
-        <span class="welcome-and">∞</span>
+        <span class="welcome-and">y</span>
         <h1 class="welcome-names">Abigail</h1>
 
         <div class="welcome-divider">
@@ -985,7 +985,7 @@
         <p class="hero-eyebrow">Tenemos el honor de</p>
         <p class="hero-eyebrow" style="margin-bottom:20px;">invitarte a nuestra boda</p>
         <span class="name-script noe">Noé</span>
-        <span class="name-script and">∞</span>
+        <span class="name-script and">y</span>
         <span class="name-script abi">Abigail</span>
 
         <div class="hero-line">
@@ -1563,7 +1563,7 @@
      FOOTER
 ══════════════════════════════ -->
 <footer>
-    <div class="footer-names">Noé <span style="color: var(--gold);">∞</span> Abigail</div>
+    <div class="footer-names">Noé <span style="color: var(--gold);">y</span> Abigail</div>
     <p class="footer-date">20 &middot; Junio &middot; 2026</p>
     <p class="footer-sub">Con amor y gratitud, los esperamos</p>
 </footer>
@@ -1636,7 +1636,7 @@ const NOE_WA   = '+50488472150';
 const ABBY_WA  = '+50495221083';
 
 function waUrl(phone, name, count){
-    const msg = encodeURIComponent(`Hola! Confirmo mi asistencia a la boda de Noé ∞ Abigail el 20 de Junio 2026.\nNombre: ${name} (${count} ${count===1?'persona':'personas'})`);
+    const msg = encodeURIComponent(`Hola! Confirmo mi asistencia a la boda de Noé y Abigail el 20 de Junio 2026.\nNombre: ${name} (${count} ${count===1?'persona':'personas'})`);
     return `https://wa.me/${phone.replace(/\D/g,'')}?text=${msg}`;
 }
 
