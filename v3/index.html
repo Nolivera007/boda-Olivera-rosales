@@ -1198,6 +1198,89 @@
             font-size:12px; color:rgba(247,243,235,.42);
         }
 
+        /* ══════════════════════════════════
+           BOTÓN FLOTANTE DE MÚSICA
+        ══════════════════════════════════ */
+        .music-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--olive-dark);
+            color: var(--gold-light);
+            border: 1.5px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 4px 16px rgba(45,74,45,.35);
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            opacity: 0;
+            transform: scale(.8) translateY(20px);
+            pointer-events: none;
+        }
+
+        .music-fab.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .music-fab:hover {
+            background: var(--olive);
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(200,168,75,.4);
+        }
+
+        .music-fab svg {
+            width: 22px; height: 22px;
+            fill: currentColor;
+        }
+
+        .music-fab .icon-pause { display: none; }
+        .music-fab.playing .icon-play { display: none; }
+        .music-fab.playing .icon-pause { display: block; }
+
+        /* Anillo pulsante cuando está reproduciendo */
+        .music-fab.playing::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            opacity: .6;
+            animation: musicPulse 2s ease-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%   { transform: scale(1);    opacity: .6; }
+            100% { transform: scale(1.4);  opacity: 0;  }
+        }
+
+        /* Tooltip al hover */
+        .music-fab .tooltip {
+            position: absolute;
+            right: calc(100% + 10px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--olive-dark);
+            color: var(--cream);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+        .music-fab:hover .tooltip { opacity: 1; }
+
         /* ── RESPONSIVE ── */
         @media (max-width:520px) {
             nav { gap:8px; }
@@ -1949,6 +2032,26 @@
     <p class="footer-sub">Con amor y gratitud, los esperamos</p>
 </footer>
 
+<!-- ══════════════════════════════
+     MÚSICA DE FONDO
+══════════════════════════════ -->
+<audio id="bg-music" loop preload="none">
+    <!-- Pega aquí el archivo MP3 cuando lo subas al repo -->
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-fab" id="musicFab" onclick="toggleMusic()" aria-label="Activar música">
+    <svg class="icon-play" viewBox="0 0 24 24">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+    </svg>
+    <svg class="icon-pause" viewBox="0 0 24 24">
+        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+    </svg>
+    <span class="tooltip">Música</span>
+</button>
+
 <script>
 // ── WELCOME OVERLAY ──
 function openEnvelope(){
@@ -1972,12 +2075,49 @@ function closeWelcome(){
         ov.style.display = 'none';
         // Asegurar que al entrar estemos al inicio (hero)
         window.scrollTo({ top: 0, behavior: 'instant' });
+        // Mostrar el botón flotante de música ahora que ya entró a la web
+        const fab = document.getElementById('musicFab');
+        if(fab) fab.classList.add('visible');
     }, 900);
 
     // Activar animaciones scroll y hero-writing
     setupScrollAnimations();
     animateHeroOnOpen();
 }
+
+// ═══════════════════════════════
+//   MÚSICA DE FONDO
+// ═══════════════════════════════
+function toggleMusic(){
+    const audio = document.getElementById('bg-music');
+    const fab = document.getElementById('musicFab');
+    if(!audio || !fab) return;
+
+    if(audio.paused){
+        const playPromise = audio.play();
+        if(playPromise !== undefined){
+            playPromise.then(() => {
+                fab.classList.add('playing');
+                fab.querySelector('.tooltip').textContent = 'Pausar';
+            }).catch(err => {
+                console.warn('No se pudo reproducir música:', err);
+                alert('No se pudo reproducir la música. Asegúrate de que el archivo cancion.mp3 esté disponible.');
+            });
+        }
+    } else {
+        audio.pause();
+        fab.classList.remove('playing');
+        fab.querySelector('.tooltip').textContent = 'Música';
+    }
+}
+
+// Si el audio termina (por si falla el loop), reactivar
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bg-music');
+    if(audio){
+        audio.volume = 0.5; // 50% de volumen por defecto
+    }
+});
 
 // ═══════════════════════════════
 //   ANIMACIÓN DEL HERO AL ENTRAR
@@ -2195,7 +2335,9 @@ function copyNum(num, toastId){
 // Para sincronizar confirmaciones entre dispositivos (recomendado):
 // 1. Crear un Google Apps Script Web App que reciba POST y escriba en una hoja.
 // 2. Poner la URL aquí (termina en /exec):
-const RSVP_ENDPOINT = '';   // ← opcional, dejar vacío si no se usa
+// ⬇️ PEGAR AQUÍ LA URL DEL GOOGLE APPS SCRIPT (termina en /exec)
+//    Mientras esté vacío, las confirmaciones se guardan solo en localStorage del dispositivo
+const RSVP_ENDPOINT = '';   // ej: 'https://script.google.com/macros/s/AKfycbx.../exec'
 // Clave simple para que sólo los novios entren al #admin
 const ADMIN_PASS   = 'noe2026';
 
