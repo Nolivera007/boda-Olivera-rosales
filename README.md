@@ -14,7 +14,7 @@ Sitio web de la invitación digital para la boda de **Noé & Abigail**.
 |---------|-------------|
 | `index.html` | Invitación digital oficial |
 | `portada_invitacion.html` | Portada para convertir a PDF |
-| `portada_invitacion.pdf` | PDF para imprimir/compartir |
+| [`portada_invitacion.pdf`](https://github.com/Nolivera007/boda-Olivera-rosales/raw/main/portada_invitacion.pdf) | **Descargar PDF** para imprimir/compartir |
 
 ## ✨ Funciones
 
