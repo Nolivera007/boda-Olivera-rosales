@@ -12,16 +12,18 @@ Sitio web de la invitación digital para la boda de **Noé & Abigail**.
 
 | Archivo | Descripción |
 |---------|-------------|
-| `index.html` | Invitación digital completa (web) |
+| `index.html` | **Invitación digital v3** (versión actual y recomendada) |
 | `portada_invitacion.html` | Portada en HTML para convertir a PDF |
 | `portada_invitacion.pdf` | PDF listo para compartir con invitados |
+| `v2/` | Archivo histórico (versión anterior)
 
 ## ✨ Funciones
 
 - 🎉 Pantalla de bienvenida animada
 - 👰🤵 Lista de invitados con búsqueda personalizada
-- ✅ Confirmación de asistencia en línea (RSVP)
-- 💬 Confirmación directa por WhatsApp a Noé o Abigail
+- ✅ Confirmación de asistencia solo por WhatsApp
+- 💬 Botones directos a WhatsApp de Noé o Abigail
+- 🎵 Música de fondo: "Just the Way You Are" (Bruno Mars)
 - 🎁 Información de regalos y transferencias bancarias
 - 📱 Diseño responsive para móviles
 
