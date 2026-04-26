@@ -12,10 +12,9 @@ Sitio web de la invitación digital para la boda de **Noé & Abigail**.
 
 | Archivo | Descripción |
 |---------|-------------|
-| `index.html` | **Invitación digital v3** (versión actual y recomendada) |
-| `portada_invitacion.html` | Portada en HTML para convertir a PDF |
-| `portada_invitacion.pdf` | PDF listo para compartir con invitados |
-| `v2/` | Archivo histórico (versión anterior)
+| `index.html` | Invitación digital oficial |
+| `portada_invitacion.html` | Portada para convertir a PDF |
+| `portada_invitacion.pdf` | PDF para imprimir/compartir |
 
 ## ✨ Funciones
 
