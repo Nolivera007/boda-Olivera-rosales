@@ -1829,7 +1829,11 @@ function animateHeroOnOpen(){
 // ═══════════════════════════════
 //   ANIMACIONES AL HACER SCROLL
 // ═══════════════════════════════
+let _scrollAnimationsReady = false;
 function setupScrollAnimations(){
+    if(_scrollAnimationsReady) return;
+    _scrollAnimationsReady = true;
+
     // Observar secciones para fade-in
     const targets = document.querySelectorAll(
         'section, .tl-item, .detail-card, .bruno-card, .rsvp-card, .rcard'
@@ -1842,13 +1846,18 @@ function setupScrollAnimations(){
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
-    targets.forEach((el, i) => {
+    // Aplicar stagger LOCAL por grupo (no global)
+    document.querySelectorAll('.tl-item').forEach((el, i) => {
+        el.style.transitionDelay = (i * 0.12) + 's';
+    });
+    document.querySelectorAll('.detail-card').forEach((el, i) => {
+        el.style.transitionDelay = (i * 0.10) + 's';
+    });
+
+    targets.forEach(el => {
         el.classList.add('pre-animate');
-        if(el.classList.contains('tl-item') || el.classList.contains('detail-card')){
-            el.style.transitionDelay = (i * 0.08) + 's';
-        }
         observer.observe(el);
     });
 
