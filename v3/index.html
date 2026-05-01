@@ -555,9 +555,11 @@
             color: var(--olive-light); margin-bottom: 26px;
         }
         .cd-grid {
-            display: flex; justify-content: center;
+            display: flex; justify-content: center; align-items: flex-start;
             gap: clamp(18px,5vw,52px); flex-wrap: wrap;
+            max-width: 720px; margin: 0 auto;
         }
+        .cd-grid > div { min-width: 80px; text-align: center; }
         .cd-num {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(50px,11vw,84px); font-weight: 300;
@@ -704,7 +706,7 @@
         }
 
         /* ── SEARCH ── */
-        #tu-invitacion { background: var(--cream-dark); }
+        #tu-invitacion { background: var(--cream); }
         .search-wrap { max-width: 520px; margin: 0 auto; }
         .search-intro { text-align:center; font-style:italic; font-size:16px; color:var(--text-light); margin-bottom:28px; }
         .search-row   { position:relative; margin-bottom:9px; }
@@ -797,7 +799,7 @@
         }
 
         /* ── REGALOS ── */
-        #regalos { background: var(--cream); }
+        #regalos { background: var(--cream-dark); }
         .regalo-intro {
             text-align:center; max-width:440px; margin:0 auto 36px;
             font-family: 'Cormorant Garamond', Georgia, serif;
@@ -1475,8 +1477,8 @@
 <!-- ══════════════════════════════
      VESTIMENTA
 ══════════════════════════════ -->
-<section id="vestimenta" style="padding:60px 20px; text-align:center;">
-    <div class="rsvp-notes-wrap" style="max-width:520px; margin:0 auto; text-align:center; border-left:none;">
+<section id="vestimenta" style="background:#e5ddc9; padding:60px 24px; text-align:center;">
+    <div class="rsvp-notes-wrap" style="max-width:520px; margin:0 auto; text-align:center; border-left:3px solid var(--gold); border-radius:4px;">
         <p class="rsvp-note">🤵👗 La vestimenta es formal</p>
         <p class="rsvp-note">🤍 Nos reservamos el color blanco para la novia</p>
     </div>
