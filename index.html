@@ -1834,9 +1834,9 @@ function setupScrollAnimations(){
     if(_scrollAnimationsReady) return;
     _scrollAnimationsReady = true;
 
-    // Observar secciones para fade-in
+    // Observar secciones para fade-in (incluye #countdown que es div, no section)
     const targets = document.querySelectorAll(
-        'section, .tl-item, .detail-card, .bruno-card, .rsvp-card, .rcard'
+        'section, #countdown, .tl-item, .dcard, .bruno-card, .rsvp-card, .rcard'
     );
 
     const observer = new IntersectionObserver((entries) => {
@@ -1849,12 +1849,10 @@ function setupScrollAnimations(){
     }, { threshold: 0, rootMargin: '0px 0px 150px 0px' });
 
     // Stagger MUY corto y acotado: como máximo 0.18s para el último item.
-    // Antes era 0.12s acumulado (último item: 0.48s) lo que con la transición
-    // de 0.9s dejaba el último elemento a 1.38s — demasiado lento al hacer scroll.
     document.querySelectorAll('.tl-item').forEach((el, i) => {
         el.style.transitionDelay = Math.min(i * 0.04, 0.18) + 's';
     });
-    document.querySelectorAll('.detail-card').forEach((el, i) => {
+    document.querySelectorAll('.dcard').forEach((el, i) => {
         el.style.transitionDelay = (i * 0.06) + 's';
     });
 
